@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>无尽小岛</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="game.js" defer></script>
+  </head>
+  <body>
+    <main class="shell" aria-label="无尽探索游戏">
+      <canvas id="world" width="960" height="640" aria-label="像素探索世界"></canvas>
+
+      <section class="hud hud-left" aria-label="状态">
+        <h1>无尽小岛</h1>
+        <p id="place">x 0 · y 0</p>
+      </section>
+
+      <section class="hud hud-right" aria-label="环境">
+        <p id="biome">草原</p>
+        <p id="event">漫游中</p>
+        <p id="weather">晴朗</p>
+        <p id="time">黎明</p>
+      </section>
+
+      <section class="settings" aria-label="基础设置">
+        <p>基础设置</p>
+        <div class="segmented" role="group" aria-label="移动速度">
+          <button type="button" data-speed="low" aria-pressed="false">低</button>
+          <button type="button" data-speed="medium" aria-pressed="true">中</button>
+          <button type="button" data-speed="high" aria-pressed="false">高</button>
+        </div>
+      </section>
+
+      <section class="memory" aria-label="记忆">
+        <p>记忆</p>
+        <div id="memories" class="memories">尚未记录</div>
+      </section>
+
+      <section id="memoryDetail" class="memory-detail is-hidden" aria-label="完整记忆"></section>
+
+      <section class="toolbar" aria-label="控制">
+        <button id="pause" type="button" aria-label="暂停" title="暂停">Ⅱ</button>
+        <button id="interact" type="button" aria-label="交互" title="交互">拾</button>
+        <button id="seed" type="button" aria-label="换一个世界" title="换一个世界">↻</button>
+        <button id="map" type="button" aria-label="显示小地图" title="显示小地图">□</button>
+        <button id="teleport" type="button" aria-label="传送" title="传送">⇥</button>
+      </section>
+
+      <section id="teleportPanel" class="teleport-panel is-hidden" aria-label="传送目录">
+        <p>传送目录</p>
+        <div id="teleportList" class="teleport-list"></div>
+        <button id="teleportGo" class="teleport-go" type="button">传送</button>
+      </section>
+
+      <button id="touchInteract" class="touch-interact" type="button" aria-label="交互" title="交互">拾</button>
+      <button id="discard" class="discard" type="button" aria-label="丢弃" title="丢弃">丢</button>
+
+      <section class="inventory" aria-label="物品栏">
+        <p>物品栏</p>
+        <div id="items" class="items">空</div>
+      </section>
+
+      <section id="mini" class="minimap" aria-label="小地图"></section>
+      <section id="nearby" class="nearby is-hidden" aria-label="附近"></section>
+    </main>
+  </body>
+</html>
