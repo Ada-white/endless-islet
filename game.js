@@ -100,7 +100,7 @@ function setMapSize() {
 function mapColor(tile, event, settlement) {
   if (tile.id === "caveWall") return "#100d14";
   if (tile.id === "cave") return event?.type === "crystalField" ? "#6bcbd8" : "#2a2634";
-  if (tile.id === "dragonCave") return event?.type === "dragon" ? "#c9a06f" : "#302019";
+  if (tile.id === "dragonCave") return "#302019";
   if (waterTerrain.has(tile.id)) return tile.id === "ocean" ? "#162f42" : "#263f4b";
   let color = tile.id === "forest" ? "#314933" : tile.id === "desert" || tile.id === "beach" ? "#5d503d" : tile.id === "ember" ? "#51352f" : tile.id === "snow" ? "#77746b" : tile.id === "swamp" ? "#454f36" : "#3e4f3b";
   if (tile.island) color = tile.id === "beach" ? "#776745" : color;
@@ -231,7 +231,6 @@ const eventLabels = {
   caveExit: "洞口",
   giantCrystal: "巨型水晶",
   dragonTreasure: "龙的宝藏",
-  dragon: "龙",
   dragonEgg: "龙蛋",
 };
 
@@ -303,98 +302,32 @@ const caveCrystalDrops = [
 const snowMountainDrops = ["雪晶", "冰棱", "冻岩片", "山顶雪", "寒铁砂", "雪松针"];
 const emberDrops = ["黑曜石", "火纹矿", "赤铁渣", "硫磺晶", "熔岩玻璃", "焦木炭", "余烬盐", "火山灰"];
 const dragonTreasureDrops = ["旧金币", "龙鳞片", "银杯", "古钥匙", "镶晶戒指", "龙洞地图"];
-const dragonSpecies = {
-  cloudSerpent: {
-    culture: "eastern",
-    name: "云脉龙",
-    english: "Cloud Serpent",
-    colors: { body: "#8fd8c8", belly: "#e9f3d7", scale: "#f5d66c", horn: "#f4edbe", eye: "#17302f", accent: "#ccfff1" },
-    scalePattern: ["==", "~~", "◇◇"],
-    giftChance: 0.26,
-    gifts: ["云鳞", "风骨铃", "青玉龙须", "浮云结"],
-    lines: [
-      "风先听见你，旅人。",
-      "山脉记得你的脚步，水还在辨认。",
-      "若你愿意安静片刻，我赠你一枚旧鳞。",
-      "别惊动蛋壳里的梦，它还在听雨。",
-    ],
-  },
-  moonhornLong: {
-    culture: "eastern",
-    name: "月角龙",
-    english: "Moonhorn Long",
-    colors: { body: "#9fb9e8", belly: "#f0eef8", scale: "#d8d2ff", horn: "#fff2b8", eye: "#1b1c3a", accent: "#cfe5ff" },
-    scalePattern: ["<>", "==", "**"],
-    giftChance: 0.22,
-    gifts: ["月角碎片", "静潮珠", "银蓝龙鳞", "月影铃"],
-    lines: [
-      "月光落进洞里时，我会数岛上的潮声。",
-      "不要急着拿走，会惊醒石头里的雨。",
-      "你身上有远海的盐，也有草叶的气味。",
-      "若礼物很轻，也请认真收好。",
-    ],
-  },
-  rainscaleDragon: {
-    culture: "eastern",
-    name: "雨鳞龙",
-    english: "Rainscale Dragon",
-    colors: { body: "#6ebf92", belly: "#d8f0bb", scale: "#89e6d1", horn: "#e8dc91", eye: "#143223", accent: "#a5ffd9" },
-    scalePattern: ["~~", "{}", "=="],
-    giftChance: 0.3,
-    gifts: ["雨脉珠", "听潮鳞片", "苔青龙须", "溪纹玉"],
-    lines: [
-      "雨会替温柔的人记路。",
-      "我守的是气脉，不只是晶石。",
-      "小岛还在长大，你听见地下的水了吗？",
-      "带走这点雨意，别带走贪心。",
-    ],
-  },
-  emberDrake: {
-    culture: "western",
-    name: "余烬龙",
-    english: "Ember Drake",
-    colors: { body: "#9e463a", belly: "#d68b4f", scale: "#ffcf65", horn: "#f3d6a6", eye: "#ffd56b", accent: "#ff7d45" },
-    scalePattern: ["/\\", "^^", "##"],
-    giftChance: 0.24,
-    gifts: ["余烬龙鳞", "火心石", "熔金牙坠", "焦红爪片"],
-    lines: [
-      "State your wish, little wanderer.",
-      "我的火不为威吓，只为记住边界。",
-      "A gift is not a surrender. Take it with respect.",
-      "再近一步前，先让你的手空下来。",
-    ],
-  },
-  blackwingWyrm: {
-    culture: "western",
-    name: "黑翼龙",
-    english: "Blackwing Wyrm",
-    colors: { body: "#3b3342", belly: "#6d6674", scale: "#9c90aa", horn: "#d5c7b8", eye: "#ffcf66", accent: "#c99cff" },
-    scalePattern: ["\\/","<>", "##"],
-    giftChance: 0.2,
-    gifts: ["黑翼扣", "暗鳞护片", "夜誓石", "古堡银扣"],
-    lines: [
-      "Speak clearly. Old caves dislike half-promises.",
-      "我的宝库记得每一只伸来的手。",
-      "契约不必写下，也会留在火光里。",
-      "若你只是路过，我允许你带走一小片夜色。",
-    ],
-  },
-  goldbackDragon: {
-    culture: "western",
-    name: "金脊龙",
-    english: "Goldback Dragon",
-    colors: { body: "#a76e36", belly: "#f0c46d", scale: "#ffe18a", horn: "#fff0bf", eye: "#39210e", accent: "#ffd45d" },
-    scalePattern: ["^^", "==", "$$"],
-    giftChance: 0.28,
-    gifts: ["金脊硬币", "王冠碎金", "琥珀龙鳞", "旧王印章"],
-    lines: [
-      "Gold shines best when it is not begged for.",
-      "旅人，宝物不是答案，只是重量。",
-      "我喜欢诚实的目光，它比金币少见。",
-      "拿去吧。让它提醒你，礼物也有边界。",
-    ],
-  },
-};
+const dragonTreasureRareDrops = [
+  "云鳞",
+  "风骨铃",
+  "青玉龙须",
+  "浮云结",
+  "月角碎片",
+  "静潮珠",
+  "银蓝龙鳞",
+  "月影铃",
+  "雨脉珠",
+  "听潮鳞片",
+  "苔青龙须",
+  "溪纹玉",
+  "余烬龙鳞",
+  "火心石",
+  "熔金牙坠",
+  "焦红爪片",
+  "黑翼扣",
+  "暗鳞护片",
+  "夜誓石",
+  "古堡银扣",
+  "金脊硬币",
+  "王冠碎金",
+  "琥珀龙鳞",
+  "旧王印章",
+];
 
 function hash2(x, y, salt = 0) {
   let n = Math.imul(x, 374761393) ^ Math.imul(y, 668265263) ^ Math.imul(seed + salt, 1442695041);
@@ -511,14 +444,6 @@ function caveInfo() {
   const dragonKind = hash2(salt, seed, 7202) > 0.5 ? "eastern" : "western";
   const linked = dragon || hash2(salt, seed, 7201) > 0.42;
   return { salt, dragon, dragonKind, linked };
-}
-
-function dragonProfile() {
-  const info = caveInfo();
-  const species = Object.entries(dragonSpecies).filter(([, dragon]) => dragon.culture === info.dragonKind);
-  const index = Math.floor(hash2(info.salt, seed, 7203) * species.length) % species.length;
-  const [id, profile] = species[index] || Object.entries(dragonSpecies)[0];
-  return { id, ...profile };
 }
 
 function caveRoomCenter(cx, cy, salt) {
@@ -651,10 +576,6 @@ function caveEventAt(tx, ty, tile) {
   const roll = hash2(roomX, roomY, info.salt + 102);
 
   if (info.dragon) {
-    const dragonX = 18;
-    const dragonY = -12;
-    const dragonDistance = Math.hypot(tx - dragonX, ty - dragonY);
-    if (dragonDistance < 8) return { type: "dragon", label: "龙", distance: dragonDistance, dx: tx - dragonX, dy: ty - dragonY, visible: dragonDistance < 1.2 };
     if (distance < 5 && roll > 0.52 && roll <= 0.72) return { type: "dragonTreasure", label: "龙的宝藏", distance, dx, dy };
     if (distance < 4 && roll > 0.86) return { type: "dragonEgg", label: "龙蛋", distance, dx, dy };
     if (distance < 8 && roll > 0.18 && roll <= 0.52) return { type: "giantCrystal", label: "巨型水晶", distance, dx, dy };
@@ -1057,16 +978,12 @@ function leaveCave() {
   drawMini();
 }
 
-function dragonSpeech() {
-  const profile = dragonProfile();
-  const lines = profile.lines;
-  return lines[Math.floor(hash2(Math.floor(player.x / TILE), Math.floor(player.y / TILE), 8100 + Math.floor(elapsed * 11)) * lines.length) % lines.length];
-}
-
-function dragonGift() {
-  const profile = dragonProfile();
-  const gifts = profile.gifts;
-  return gifts[Math.floor(hash2(Math.floor(player.x / TILE), Math.floor(player.y / TILE), 8120 + Math.floor(elapsed * 13)) * gifts.length) % gifts.length];
+function dragonTreasureDrop() {
+  const tx = Math.floor(player.x / TILE);
+  const ty = Math.floor(player.y / TILE);
+  const rareRoll = hash2(tx, ty, 8160 + Math.floor(elapsed * 17));
+  if (rareRoll > 0.76) return pick(dragonTreasureRareDrops, 9);
+  return pick(dragonTreasureDrops, 8);
 }
 
 function nearbyInteraction() {
@@ -1102,7 +1019,6 @@ function nearbyInteraction() {
       let target = null;
       if (event?.type === "caveMouth") target = { kind: "caveEnter", label: "洞口", tile, tx: x, ty: y, priority: 7, reach: 42 };
       else if (event?.type === "caveExit") target = { kind: "caveExit", label: "洞口", tile, priority: 7, reach: 46 };
-      else if (event?.type === "dragon") target = { kind: "dragon", label: dragonProfile().name, tile, priority: 8, reach: 58 };
       else if (event?.type === "dragonTreasure") target = { kind: "dragonTreasure", label: "龙的宝藏", tile, priority: 7, reach: 42 };
       else if (event?.type === "dragonEgg") target = { kind: "dragonEgg", label: "龙蛋", tile, priority: 7, reach: 38 };
       else if (event?.type === "giantCrystal") target = { kind: "giantCrystal", label: "巨型水晶", tile, priority: 6, reach: 46 };
@@ -1168,19 +1084,6 @@ function interact() {
     leaveCave();
     return;
   }
-  if (target.kind === "dragon") {
-    const profile = dragonProfile();
-    const line = dragonSpeech();
-    remember(`dragon:${profile.id}:${line}`, `${profile.name}说 ${line}`, true);
-    nearbyEl.textContent = `${profile.name}：${line}`;
-    nearbyEl.classList.remove("is-hidden");
-    if (hash2(Math.floor(player.x / TILE), Math.floor(player.y / TILE), 8140 + Math.floor(elapsed * 17)) > 1 - profile.giftChance) {
-      const gift = dragonGift();
-      addItem(gift);
-      remember(`dragon-gift:${profile.id}:${gift}`, `${profile.name}赠予 ${gift}`, true);
-    }
-    return;
-  }
   remember(`interact:${target.kind}:${target.label}`, `触碰 ${target.label}`);
   if (target.kind === "water") addItem(pick(waterDrops[target.tile.id] || waterDrops.water, 1));
   else if (target.kind === "tree") addItem(pick(treeDrops[target.tile.id] || treeDrops.grass, 2));
@@ -1189,7 +1092,7 @@ function interact() {
   else if (target.kind === "sakura") addItem(pick(["樱花花瓣", "樱桃", "樱花树皮"], 4));
   else if (target.kind === "crystal") addItem(worldMode === "cave" ? caveCrystalPick(false) : weightedPick(crystalDrops));
   else if (target.kind === "giantCrystal") addItem(caveCrystalPick(true));
-  else if (target.kind === "dragonTreasure") addItem(pick(dragonTreasureDrops, 8));
+  else if (target.kind === "dragonTreasure") addItem(dragonTreasureDrop());
   else if (target.kind === "dragonEgg") addItem("龙蛋");
   else if (target.kind === "ember") addItem(pick(emberDrops, 7));
   else if (target.kind === "plant") {
@@ -1460,333 +1363,7 @@ function drawEvent(screenX, screenY, size, tx, ty, event) {
     ctx.fillStyle = "#d7f0df";
     ctx.font = `${Math.max(13, Math.floor(size * 0.78))}px ui-monospace, SFMono-Regular, Menlo, monospace`;
     ctx.fillText("()", screenX + size * 0.5, screenY + size * 0.52);
-  } else if (event.type === "dragon") {
-    drawDragon(screenX, screenY, size, tx, ty, event);
   }
-  ctx.globalAlpha = 1;
-}
-
-function drawDragon(screenX, screenY, size, tx, ty, event) {
-  if (!event.visible) return;
-  const profile = dragonProfile();
-  if (profile.culture === "eastern") {
-    drawSingleEasternCoiledDragon(screenX, screenY, size, tx, ty, profile);
-    return;
-  }
-  drawSingleWesternDragon(screenX, screenY, size, tx, ty, profile);
-}
-
-function drawSingleEasternCoiledDragon(screenX, screenY, size, tx, ty, profile) {
-  const pulse = Math.sin(elapsed * 2.1 + tx * 0.2 + ty * 0.1);
-  const scale = size * 0.95;
-  const originX = screenX + size * 0.5;
-  const originY = screenY + size * 0.5 + pulse * size * 0.08;
-  const spine = easternCoiledDragonSpine(originX, originY, scale, pulse);
-  const head = spine[spine.length - 1];
-  ctx.save();
-  drawEasternDragonBody(spine, scale, profile);
-  drawEasternMane(spine, scale, profile);
-  drawDragonTail(spine[0].x, spine[0].y, scale * 0.82, profile, "eastern");
-  drawDragonHead(head.x + scale * 0.28, head.y - scale * 0.28, scale * 1.08, profile, "eastern");
-  drawDragonWhiskers(head.x + scale * 0.62, head.y - scale * 0.06, scale, profile);
-  for (const index of [3, 8, 13]) drawDragonClaw(spine[index].x, spine[index].y + scale * 0.34, scale * 0.6, profile, "eastern");
-  ctx.restore();
-  ctx.globalAlpha = 1;
-}
-
-function drawSingleWesternDragon(screenX, screenY, size, tx, ty, profile) {
-  const pulse = Math.sin(elapsed * 1.8 + tx * 0.2 + ty * 0.1);
-  const scale = size * 1.05;
-  const cx = screenX + size * 0.5;
-  const cy = screenY + size * 0.5 + pulse * size * 0.05;
-
-  ctx.save();
-  drawWesternWing(cx - scale * 0.38, cy - scale * 0.22, scale * 1.28, profile, -1, pulse);
-  drawWesternWing(cx + scale * 0.38, cy - scale * 0.22, scale * 1.28, profile, 1, pulse);
-  drawDragonTail(cx - scale * 0.62, cy + scale * 1.02, scale * 1.05, profile, "western");
-  drawWesternStandingBody(cx, cy + scale * 0.2, scale, profile);
-  drawWesternChestPlates(cx, cy + scale * 0.24, scale, profile);
-  drawDragonHead(cx, cy - scale * 0.9, scale * 1.03, profile, "western");
-  drawDragonClaw(cx - scale * 0.48, cy + scale * 0.94, scale * 0.72, profile, "western");
-  drawDragonClaw(cx + scale * 0.48, cy + scale * 0.94, scale * 0.72, profile, "western");
-  ctx.restore();
-  ctx.globalAlpha = 1;
-}
-
-function easternDragonSpine(originX, originY, scale, pulse) {
-  return easternCoiledDragonSpine(originX, originY, scale, pulse);
-}
-
-function easternCoiledDragonSpine(originX, originY, scale, pulse) {
-  const points = [];
-  for (let i = 0; i < 18; i += 1) {
-    const t = i / 17;
-    const angle = t * Math.PI * 2.18 - Math.PI * 0.22 + pulse * 0.05;
-    const radius = scale * (1.72 - t * 0.45);
-    const breathing = Math.sin(elapsed * 0.8 + i * 0.65) * scale * 0.05;
-    const x = originX + Math.cos(angle) * radius * 1.35 + breathing;
-    const y = originY + Math.sin(angle) * radius * 0.76 + Math.cos(elapsed * 0.7 + i) * scale * 0.06;
-    points.push({ x, y, t });
-  }
-  return points;
-}
-
-function drawEasternDragonBody(spine, scale, profile) {
-  ctx.strokeStyle = profile.colors.body;
-  ctx.lineWidth = Math.max(4, scale * 0.56);
-  ctx.lineCap = "round";
-  ctx.lineJoin = "round";
-  ctx.globalAlpha = 0.93;
-  ctx.beginPath();
-  ctx.moveTo(spine[0].x, spine[0].y);
-  for (let i = 1; i < spine.length - 1; i += 1) {
-    const midX = (spine[i].x + spine[i + 1].x) / 2;
-    const midY = (spine[i].y + spine[i + 1].y) / 2;
-    ctx.quadraticCurveTo(spine[i].x, spine[i].y, midX, midY);
-  }
-  ctx.stroke();
-
-  ctx.strokeStyle = profile.colors.belly;
-  ctx.lineWidth = Math.max(2, scale * 0.22);
-  ctx.globalAlpha = 0.88;
-  ctx.beginPath();
-  ctx.moveTo(spine[1].x, spine[1].y + scale * 0.18);
-  for (let i = 2; i < spine.length - 1; i += 1) {
-    ctx.lineTo(spine[i].x, spine[i].y + scale * 0.18);
-  }
-  ctx.stroke();
-  ctx.lineCap = "butt";
-
-  ctx.fillStyle = profile.colors.scale;
-  ctx.font = `${Math.max(8, Math.floor(scale * 0.26))}px ui-monospace, SFMono-Regular, Menlo, monospace`;
-  ctx.textAlign = "center";
-  ctx.textBaseline = "middle";
-  ctx.globalAlpha = 0.72;
-  for (let i = 2; i < spine.length - 2; i += 2) {
-    ctx.fillText(profile.scalePattern[i % profile.scalePattern.length], spine[i].x, spine[i].y - scale * 0.12);
-  }
-  ctx.globalAlpha = 1;
-}
-
-function drawEasternMane(spine, scale, profile) {
-  ctx.strokeStyle = profile.colors.accent;
-  ctx.lineWidth = Math.max(1, scale * 0.08);
-  ctx.globalAlpha = 0.78;
-  for (let i = 6; i < spine.length; i += 1) {
-    const point = spine[i];
-    ctx.beginPath();
-    ctx.moveTo(point.x, point.y - scale * 0.22);
-    ctx.lineTo(point.x - scale * 0.12, point.y - scale * (0.5 + (i % 3) * 0.12));
-    ctx.stroke();
-  }
-  ctx.globalAlpha = 1;
-}
-
-function drawDragonWhiskers(x, y, scale, profile) {
-  ctx.strokeStyle = profile.colors.accent;
-  ctx.lineWidth = Math.max(1, scale * 0.06);
-  ctx.globalAlpha = 0.82;
-  for (const side of [-1, 1]) {
-    ctx.beginPath();
-    ctx.moveTo(x, y);
-    ctx.quadraticCurveTo(x + side * scale * 0.7, y + scale * 0.34, x + side * scale * 1.25, y + scale * 0.08);
-    ctx.stroke();
-    ctx.beginPath();
-    ctx.moveTo(x - side * scale * 0.08, y + scale * 0.1);
-    ctx.quadraticCurveTo(x + side * scale * 0.55, y + scale * 0.56, x + side * scale * 1.0, y + scale * 0.48);
-    ctx.stroke();
-  }
-  ctx.globalAlpha = 1;
-}
-
-function drawWesternStandingBody(cx, cy, scale, profile) {
-  ctx.globalAlpha = 0.94;
-  ctx.fillStyle = profile.colors.body;
-  ctx.beginPath();
-  ctx.ellipse(cx, cy, scale * 0.62, scale * 1.0, 0, 0, Math.PI * 2);
-  ctx.fill();
-  ctx.fillStyle = profile.colors.belly;
-  ctx.beginPath();
-  ctx.ellipse(cx, cy + scale * 0.12, scale * 0.32, scale * 0.82, 0, 0, Math.PI * 2);
-  ctx.fill();
-  ctx.globalAlpha = 1;
-}
-
-function drawWesternChestPlates(cx, cy, scale, profile) {
-  ctx.strokeStyle = profile.colors.scale;
-  ctx.lineWidth = Math.max(1, scale * 0.08);
-  ctx.globalAlpha = 0.86;
-  for (let i = 0; i < 5; i += 1) {
-    const y = cy - scale * 0.54 + i * scale * 0.24;
-    ctx.beginPath();
-    ctx.moveTo(cx - scale * (0.26 - i * 0.015), y);
-    ctx.lineTo(cx, y + scale * 0.12);
-    ctx.lineTo(cx + scale * (0.26 - i * 0.015), y);
-    ctx.stroke();
-  }
-  ctx.globalAlpha = 1;
-}
-
-function drawDragonBodySegment(x, y, rx, ry, profile, index) {
-  ctx.globalAlpha = 0.92;
-  ctx.fillStyle = profile.colors.body;
-  ctx.beginPath();
-  ctx.ellipse(x, y, rx, ry, 0, 0, Math.PI * 2);
-  ctx.fill();
-  ctx.fillStyle = profile.colors.belly;
-  ctx.beginPath();
-  ctx.ellipse(x, y + ry * 0.32, rx * 0.72, ry * 0.34, 0, 0, Math.PI * 2);
-  ctx.fill();
-
-  ctx.fillStyle = profile.colors.scale;
-  ctx.font = `${Math.max(8, Math.floor(rx * 0.48))}px ui-monospace, SFMono-Regular, Menlo, monospace`;
-  ctx.textAlign = "center";
-  ctx.textBaseline = "middle";
-  ctx.globalAlpha = 0.86;
-  ctx.fillText(profile.scalePattern[index % profile.scalePattern.length], x, y - ry * 0.1);
-  ctx.globalAlpha = 1;
-}
-
-function drawDragonHead(x, y, scale, profile, culture) {
-  ctx.globalAlpha = 0.96;
-  ctx.fillStyle = profile.colors.body;
-  ctx.beginPath();
-  if (culture === "eastern") {
-    ctx.ellipse(x, y, scale * 0.7, scale * 0.44, -0.08, 0, Math.PI * 2);
-  } else {
-    ctx.ellipse(x, y, scale * 0.48, scale * 0.62, 0.02, 0, Math.PI * 2);
-  }
-  ctx.fill();
-
-  ctx.fillStyle = profile.colors.belly;
-  ctx.beginPath();
-  ctx.ellipse(x + scale * 0.28, y + scale * 0.12, scale * 0.25, scale * 0.17, 0, 0, Math.PI * 2);
-  ctx.fill();
-
-  drawDragonHorn(x - scale * 0.18, y - scale * 0.42, scale * (culture === "eastern" ? 0.72 : 0.82), profile, -1);
-  drawDragonHorn(x + scale * 0.14, y - scale * 0.44, scale * (culture === "eastern" ? 0.72 : 0.82), profile, 1);
-  drawDragonEye(x + scale * 0.08, y - scale * 0.1, scale, profile);
-  drawDragonEye(x + scale * 0.35, y - scale * 0.08, scale, profile);
-
-  if (culture === "western") {
-    ctx.fillStyle = profile.colors.accent;
-    ctx.globalAlpha = 0.82;
-    for (let i = -2; i <= 2; i += 1) {
-      ctx.beginPath();
-      ctx.moveTo(x + i * scale * 0.12, y - scale * 0.5);
-      ctx.lineTo(x + i * scale * 0.12 + scale * 0.08, y - scale * 0.86);
-      ctx.lineTo(x + i * scale * 0.12 + scale * 0.16, y - scale * 0.48);
-      ctx.closePath();
-      ctx.fill();
-    }
-  }
-
-  ctx.strokeStyle = profile.colors.accent;
-  ctx.lineWidth = Math.max(1, scale * 0.07);
-  ctx.globalAlpha = 0.78;
-  ctx.beginPath();
-  ctx.moveTo(x + scale * 0.52, y + scale * 0.12);
-  ctx.lineTo(x + scale * 0.82, y + scale * 0.18);
-  ctx.stroke();
-  if (culture === "eastern") {
-    ctx.beginPath();
-    ctx.moveTo(x + scale * 0.42, y + scale * 0.2);
-    ctx.quadraticCurveTo(x + scale * 0.78, y + scale * 0.48, x + scale * 1.02, y + scale * 0.36);
-    ctx.stroke();
-    ctx.beginPath();
-    ctx.moveTo(x + scale * 0.38, y + scale * 0.24);
-    ctx.quadraticCurveTo(x + scale * 0.72, y + scale * 0.58, x + scale * 0.9, y + scale * 0.54);
-    ctx.stroke();
-  }
-  ctx.globalAlpha = 1;
-}
-
-function drawDragonEye(x, y, scale, profile) {
-  ctx.fillStyle = "#fff8cf";
-  ctx.globalAlpha = 0.96;
-  ctx.beginPath();
-  ctx.arc(x, y, Math.max(1.4, scale * 0.08), 0, Math.PI * 2);
-  ctx.fill();
-  ctx.fillStyle = profile.colors.eye;
-  ctx.beginPath();
-  ctx.arc(x + scale * 0.02, y, Math.max(1, scale * 0.04), 0, Math.PI * 2);
-  ctx.fill();
-}
-
-function drawDragonHorn(x, y, scale, profile, direction) {
-  ctx.fillStyle = profile.colors.horn;
-  ctx.globalAlpha = 0.95;
-  ctx.beginPath();
-  ctx.moveTo(x, y);
-  ctx.lineTo(x + direction * scale * 0.2, y - scale * 0.52);
-  ctx.lineTo(x + direction * scale * 0.42, y + scale * 0.02);
-  ctx.closePath();
-  ctx.fill();
-}
-
-function drawDragonClaw(x, y, scale, profile, culture) {
-  ctx.strokeStyle = profile.colors.horn;
-  ctx.lineWidth = Math.max(1, scale * 0.08);
-  ctx.globalAlpha = 0.9;
-  for (const offset of [-0.18, 0, 0.18]) {
-    ctx.beginPath();
-    ctx.moveTo(x + scale * offset, y - scale * 0.18);
-    ctx.lineTo(x + scale * (offset + 0.03), y + scale * 0.2);
-    ctx.lineTo(x + scale * (offset + 0.14), y + scale * 0.28);
-    ctx.stroke();
-  }
-  if (culture === "eastern") {
-    ctx.strokeStyle = profile.colors.body;
-    ctx.beginPath();
-    ctx.moveTo(x - scale * 0.22, y - scale * 0.2);
-    ctx.lineTo(x, y - scale * 0.38);
-    ctx.stroke();
-  }
-  ctx.globalAlpha = 1;
-}
-
-function drawWesternWing(x, y, scale, profile, direction, pulse) {
-  const lift = pulse > 0 ? -scale * 0.28 : scale * 0.02;
-  ctx.fillStyle = profile.colors.body;
-  ctx.globalAlpha = 0.5;
-  ctx.beginPath();
-  ctx.moveTo(x, y);
-  ctx.lineTo(x + direction * scale * 0.68, y - scale * 1.22 + lift);
-  ctx.lineTo(x + direction * scale * 1.25, y - scale * 0.1 + lift);
-  ctx.quadraticCurveTo(x + direction * scale * 0.66, y + scale * 0.28, x, y);
-  ctx.closePath();
-  ctx.fill();
-
-  ctx.strokeStyle = profile.colors.accent;
-  ctx.lineWidth = Math.max(1, scale * 0.06);
-  ctx.globalAlpha = 0.78;
-  ctx.beginPath();
-  ctx.moveTo(x, y);
-  ctx.lineTo(x + direction * scale * 0.68, y - scale * 1.22 + lift);
-  ctx.lineTo(x + direction * scale * 1.25, y - scale * 0.1 + lift);
-  ctx.moveTo(x + direction * scale * 0.28, y - scale * 0.28);
-  ctx.lineTo(x + direction * scale * 0.82, y - scale * 0.06 + lift);
-  ctx.moveTo(x + direction * scale * 0.34, y - scale * 0.48);
-  ctx.lineTo(x + direction * scale * 0.95, y - scale * 0.28 + lift);
-  ctx.stroke();
-  ctx.globalAlpha = 1;
-}
-
-function drawDragonTail(x, y, scale, profile, culture) {
-  ctx.strokeStyle = profile.colors.body;
-  ctx.lineWidth = Math.max(2, scale * 0.22);
-  ctx.lineCap = "round";
-  ctx.globalAlpha = 0.82;
-  ctx.beginPath();
-  ctx.moveTo(x + scale * 0.42, y);
-  ctx.quadraticCurveTo(x - scale * 0.3, y - scale * 0.2, x - scale * 0.62, y + scale * 0.12);
-  ctx.stroke();
-  ctx.lineCap = "butt";
-  ctx.fillStyle = profile.colors.accent;
-  ctx.font = `${Math.max(7, Math.floor(scale * 0.34))}px ui-monospace, SFMono-Regular, Menlo, monospace`;
-  ctx.textAlign = "center";
-  ctx.textBaseline = "middle";
-  ctx.fillText(culture === "eastern" ? "~" : ">", x - scale * 0.66, y + scale * 0.12);
   ctx.globalAlpha = 1;
 }
 
