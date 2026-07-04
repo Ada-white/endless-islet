@@ -23,9 +23,13 @@ assert.match(source, /function drawDragonHorn/, "dragon drawing should have visi
 assert.match(source, /function drawDragonClaw/, "dragon drawing should have visible claws");
 assert.match(source, /function drawWesternWing/, "western dragons should have visible wings");
 assert.match(source, /function easternDragonSpine/, "eastern dragons should use a continuous curling spine");
+assert.match(source, /function drawSingleEasternCoiledDragon/, "eastern cave should render one coiled dragon, not several dragon clusters");
+assert.match(source, /function easternCoiledDragonSpine/, "eastern dragon body should be a coiled single-dragon spine");
+assert.match(source, /function drawSingleWesternDragon/, "western cave should render one standing winged dragon");
 assert.match(source, /function drawEasternMane/, "eastern dragons should have a mane like the references");
 assert.match(source, /function drawDragonWhiskers/, "eastern dragons should have long whiskers");
 assert.match(source, /function drawWesternChestPlates/, "western dragons should have a plated chest silhouette");
+assert.doesNotMatch(source, /for\s*\([^)]*\)\s*drawDragonHead/, "dragon caves should not draw repeated heads that read as multiple dragons");
 assert.match(source, /visible: dragonDistance < 1\.2/, "only the dragon center should draw the giant dragon");
 assert.match(source, /if \(!event\.visible\) return;/, "nearby dragon interaction area should not draw extra dragons");
 assert.doesNotMatch(source, /function drawDragonSymbolLines/, "dragon drawing should not be a block of symbol text");

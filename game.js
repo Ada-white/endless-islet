@@ -1470,30 +1470,31 @@ function drawDragon(screenX, screenY, size, tx, ty, event) {
   if (!event.visible) return;
   const profile = dragonProfile();
   if (profile.culture === "eastern") {
-    drawEasternDragon(screenX, screenY, size, tx, ty, profile);
+    drawSingleEasternCoiledDragon(screenX, screenY, size, tx, ty, profile);
     return;
   }
-  drawWesternDragon(screenX, screenY, size, tx, ty, profile);
+  drawSingleWesternDragon(screenX, screenY, size, tx, ty, profile);
 }
 
-function drawEasternDragon(screenX, screenY, size, tx, ty, profile) {
+function drawSingleEasternCoiledDragon(screenX, screenY, size, tx, ty, profile) {
   const pulse = Math.sin(elapsed * 2.1 + tx * 0.2 + ty * 0.1);
   const scale = size * 0.95;
   const originX = screenX + size * 0.5;
   const originY = screenY + size * 0.5 + pulse * size * 0.08;
-  const spine = easternDragonSpine(originX, originY, scale, pulse);
+  const spine = easternCoiledDragonSpine(originX, originY, scale, pulse);
+  const head = spine[spine.length - 1];
   ctx.save();
   drawEasternDragonBody(spine, scale, profile);
   drawEasternMane(spine, scale, profile);
   drawDragonTail(spine[0].x, spine[0].y, scale * 0.82, profile, "eastern");
-  drawDragonHead(spine[spine.length - 1].x + scale * 0.2, spine[spine.length - 1].y - scale * 0.1, scale * 1.05, profile, "eastern");
-  drawDragonWhiskers(spine[spine.length - 1].x + scale * 0.52, spine[spine.length - 1].y + scale * 0.1, scale, profile);
-  for (const index of [4, 7, 10]) drawDragonClaw(spine[index].x, spine[index].y + scale * 0.42, scale * 0.6, profile, "eastern");
+  drawDragonHead(head.x + scale * 0.28, head.y - scale * 0.28, scale * 1.08, profile, "eastern");
+  drawDragonWhiskers(head.x + scale * 0.62, head.y - scale * 0.06, scale, profile);
+  for (const index of [3, 8, 13]) drawDragonClaw(spine[index].x, spine[index].y + scale * 0.34, scale * 0.6, profile, "eastern");
   ctx.restore();
   ctx.globalAlpha = 1;
 }
 
-function drawWesternDragon(screenX, screenY, size, tx, ty, profile) {
+function drawSingleWesternDragon(screenX, screenY, size, tx, ty, profile) {
   const pulse = Math.sin(elapsed * 1.8 + tx * 0.2 + ty * 0.1);
   const scale = size * 1.05;
   const cx = screenX + size * 0.5;
@@ -1513,12 +1514,18 @@ function drawWesternDragon(screenX, screenY, size, tx, ty, profile) {
 }
 
 function easternDragonSpine(originX, originY, scale, pulse) {
+  return easternCoiledDragonSpine(originX, originY, scale, pulse);
+}
+
+function easternCoiledDragonSpine(originX, originY, scale, pulse) {
   const points = [];
-  for (let i = 0; i < 14; i += 1) {
-    const t = i / 13;
-    const curl = Math.sin(t * Math.PI * 2.25 + pulse * 0.18);
-    const x = originX + (t - 0.5) * scale * 5.8;
-    const y = originY + curl * scale * 1.05 + Math.cos(t * Math.PI * 3.4 + elapsed * 0.8) * scale * 0.12;
+  for (let i = 0; i < 18; i += 1) {
+    const t = i / 17;
+    const angle = t * Math.PI * 2.18 - Math.PI * 0.22 + pulse * 0.05;
+    const radius = scale * (1.72 - t * 0.45);
+    const breathing = Math.sin(elapsed * 0.8 + i * 0.65) * scale * 0.05;
+    const x = originX + Math.cos(angle) * radius * 1.35 + breathing;
+    const y = originY + Math.sin(angle) * radius * 0.76 + Math.cos(elapsed * 0.7 + i) * scale * 0.06;
     points.push({ x, y, t });
   }
   return points;
